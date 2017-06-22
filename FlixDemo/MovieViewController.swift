@@ -13,18 +13,30 @@ class MovieViewcontroller: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     var movies: [[String:Any]] = []
+    var refreshControl: UIRefreshControl!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControlEvents#>)
-        
         tableView.dataSource = self
+        
+        refreshControl = UIRefreshControl()
+        
+        refreshControl.addTarget(self, action: #selector(MovieViewcontroller.didPullToRefresh(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
+        fetchMovies()
+       
+        
+    }
+    func didPullToRefresh(_ refreshControl: UIRefreshControl) {
+        
         fetchMovies()
         
-           }
+    }
+    
+
+    
     
     func fetchMovies(){
         let url = URL(string:
@@ -43,6 +55,7 @@ class MovieViewcontroller: UIViewController, UITableViewDataSource {
                 let movies = dataDictionary["results"] as! [[String:Any]]
                 self.movies = movies
                 self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
             }
         }
         task.resume()
@@ -73,6 +86,15 @@ class MovieViewcontroller: UIViewController, UITableViewDataSource {
         
         
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let cell = sender as! UITableViewCell
+        if let indexPath = tableView.indexPath(for: cell){
+        let movie = movies[indexPath.row]
+        let detailViewController = segue.destination as! DetailViewController
+        detailViewController.movie = movie
+        }
     }
     
     override func didReceiveMemoryWarning() {
