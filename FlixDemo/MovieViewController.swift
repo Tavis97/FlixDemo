@@ -10,14 +10,18 @@ import UIKit
 import AlamofireImage
 
 class MovieViewcontroller: UIViewController, UITableViewDataSource {
-    
+  
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     var movies: [[String:Any]] = []
     var refreshControl: UIRefreshControl!
     
     
     override func viewDidLoad() {
+        
+        
         super.viewDidLoad()
+        activityIndicator.startAnimating()
         tableView.dataSource = self
         
         refreshControl = UIRefreshControl()
@@ -32,6 +36,7 @@ class MovieViewcontroller: UIViewController, UITableViewDataSource {
     func didPullToRefresh(_ refreshControl: UIRefreshControl) {
         
         fetchMovies()
+        
         
     }
     
@@ -56,6 +61,7 @@ class MovieViewcontroller: UIViewController, UITableViewDataSource {
                 self.movies = movies
                 self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
+                self.activityIndicator.stopAnimating()
             }
         }
         task.resume()

@@ -16,6 +16,7 @@ enum MovieKeys{
 
 class DetailViewController: UIViewController {
     
+
     
     @IBOutlet weak var backDropImageView: UIImageView!
     
@@ -56,6 +57,8 @@ class DetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    // Start the activity indicator
+
     
 
     /*
