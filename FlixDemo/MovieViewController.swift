@@ -9,7 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class MovieViewcontroller: UIViewController, UITableViewDataSource {
+class MovieViewcontroller: UIViewController, UITableViewDataSource, UISearchBarDelegate {
   
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
@@ -21,9 +21,11 @@ class MovieViewcontroller: UIViewController, UITableViewDataSource {
         
         
         super.viewDidLoad()
+        
         activityIndicator.startAnimating()
         tableView.dataSource = self
-        
+        self.navigationController?.navigationBar.barTintColor = UIColor.black
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.red]
         refreshControl = UIRefreshControl()
         
         refreshControl.addTarget(self, action: #selector(MovieViewcontroller.didPullToRefresh(_:)), for: UIControlEvents.valueChanged)
